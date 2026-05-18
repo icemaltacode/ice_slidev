@@ -1,0 +1,28 @@
+/* Design tokens. Rebrand the deck by changing values in this file. */
+
+:root {
+  --ice-primary: #0d9488;
+  --ice-primary-strong: #0f766e;
+  --ice-primary-soft: #ccfbf1;
+  --ice-fg: #0f172a;
+  --ice-fg-muted: #475569;
+  --ice-bg: #ffffff;
+  --ice-bg-soft: #f8fafc;
+  --ice-border: #e2e8f0;
+  --ice-code-bg: #f1f5f9;
+  --ice-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.05);
+  --ice-radius: 10px;
+}
+
+.dark {
+  --ice-primary: #2dd4bf;
+  --ice-primary-strong: #5eead4;
+  --ice-primary-soft: #134e4a;
+  --ice-fg: #f1f5f9;
+  --ice-fg-muted: #94a3b8;
+  --ice-bg: #0b1220;
+  --ice-bg-soft: #111827;
+  --ice-border: #1f2937;
+  --ice-code-bg: #0f172a;
+  --ice-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+}

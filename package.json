@@ -1,0 +1,27 @@
+{
+  "name": "slidev-theme-ice",
+  "version": "0.0.1",
+  "description": "ICE Malta course material theme for Slidev",
+  "type": "module",
+  "keywords": ["slidev-theme", "slidev", "ice", "ice-malta"],
+  "engines": {
+    "slidev": ">=52.0.0"
+  },
+  "files": [
+    "components",
+    "layouts",
+    "setup",
+    "styles"
+  ],
+  "slidev": {
+    "colorSchema": "both",
+    "defaults": {
+      "highlighter": "shiki",
+      "transition": "slide-left",
+      "fonts": {
+        "sans": "Inter",
+        "mono": "JetBrains Mono"
+      }
+    }
+  }
+}

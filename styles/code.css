@@ -1,0 +1,26 @@
+.slidev-layout :not(pre) > code {
+  background: var(--ice-code-bg);
+  border: 1px solid var(--ice-border);
+  border-radius: 6px;
+  padding: 0.1em 0.4em;
+  font-size: 0.9em;
+}
+
+.slidev-layout pre.shiki,
+.slidev-layout pre {
+  background: var(--ice-code-bg) !important;
+  border: 1px solid var(--ice-border);
+  border-radius: var(--ice-radius);
+  padding: 1rem 1.25rem !important;
+  box-shadow: var(--ice-shadow);
+  font-size: 0.92em;
+  line-height: 1.5;
+}
+
+.slidev-layout pre.shiki code,
+.slidev-layout pre code {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: inherit !important;
+}
