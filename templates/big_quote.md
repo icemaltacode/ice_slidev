@@ -1,0 +1,3 @@
+---
+layout: big_quote
+---

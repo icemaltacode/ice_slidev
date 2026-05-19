@@ -7,21 +7,32 @@
   "engines": {
     "slidev": ">=52.0.0"
   },
+  "scripts": {
+    "demo": "slidev example/slides.md --open",
+    "demo:build": "slidev build example/slides.md"
+  },
+  "dependencies": {
+    "qrcode.vue": "^3.9.1"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.15.2",
+    "vue": "^3.5.13"
+  },
   "files": [
+    "assets",
     "components",
     "layouts",
     "setup",
-    "styles"
+    "styles",
+    "templates"
   ],
   "slidev": {
     "colorSchema": "both",
     "defaults": {
       "highlighter": "shiki",
       "transition": "slide-left",
-      "fonts": {
-        "sans": "Inter",
-        "mono": "JetBrains Mono"
-      }
+      "canvasWidth": 1920,
+      "aspectRatio": "16/9"
     }
   }
 }

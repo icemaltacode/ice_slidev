@@ -1,3 +1,5 @@
+import './fonts.css'
 import './tokens.css'
 import './layouts.css'
 import './code.css'
+import './typography.css'

@@ -1,0 +1,99 @@
+/* Circular Std — drop .woff2 files into assets/fonts/ matching these filenames. */
+
+@font-face {
+  font-family: 'Circular Std';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/CircularStd-Book.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Circular Std';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../assets/fonts/CircularStd-BookItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Circular Std';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/CircularStd-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Circular Std';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('../assets/fonts/CircularStd-MediumItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Circular Std';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/CircularStd-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Circular Std';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('../assets/fonts/CircularStd-BoldItalic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Circular Std';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/CircularStd-Black.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Circular Std';
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+  src: url('../assets/fonts/CircularStd-BlackItalic.woff2') format('woff2');
+}
+
+/* Menlo — Regular, Italic, Bold, BoldItalic */
+
+@font-face {
+  font-family: 'Menlo';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/Menlo-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Menlo';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../assets/fonts/Menlo-Italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Menlo';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('../assets/fonts/Menlo-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Menlo';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('../assets/fonts/Menlo-BoldItalic.woff2') format('woff2');
+}

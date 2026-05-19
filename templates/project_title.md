@@ -1,0 +1,3 @@
+---
+layout: project_title
+---

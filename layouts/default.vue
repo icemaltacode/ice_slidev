@@ -6,7 +6,7 @@ const { $slidev } = useSlideContext()
 
 <template>
   <div class="slidev-layout default">
-    <div class="default-body">
+    <div class="default-body ice-prose">
       <slot />
     </div>
     <footer class="default-footer">

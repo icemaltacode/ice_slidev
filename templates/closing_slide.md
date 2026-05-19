@@ -1,0 +1,3 @@
+---
+layout: closing_slide
+---
