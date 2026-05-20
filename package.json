@@ -27,6 +27,7 @@
   "files": [
     "assets",
     "components",
+    "example",
     "layouts",
     "setup",
     "styles",

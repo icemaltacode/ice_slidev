@@ -2,25 +2,18 @@
 
 ICE Malta course material theme for [Slidev](https://sli.dev).
 
-## Use
-
-```yaml
----
-theme: ice
----
-```
-
-Install in a deck:
+## Install
 
 ```bash
 npm install slidev-theme-ice
 ```
 
-Or for local development against a sibling checkout:
+Then reference it in your deck's frontmatter:
 
-```bash
-# from the deck repo
-npm link ../ice_slidev
+```yaml
+---
+theme: ice
+---
 ```
 
 ## Templates
@@ -72,10 +65,18 @@ files are present the theme falls back to the system sans stack.
 > Circular Std is a commercial typeface licensed from Lineto. Do not commit
 > the font files to a public repository.
 
-## Development
+## Local development
 
-The theme is plain Vue + CSS. Slidev hot-reloads layout/style edits when
-the consuming deck has it installed via `npm link` or `file:` protocol.
+To work on the theme against a sibling deck checkout, link it from the
+deck repo:
+
+```bash
+# from the deck repo
+npm link ../ice_slidev
+```
+
+The theme is plain Vue + CSS, and Slidev hot-reloads layout/style edits
+as long as the deck consumes it via `npm link` or the `file:` protocol.
 
 ## License
 
