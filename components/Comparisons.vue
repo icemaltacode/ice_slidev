@@ -54,7 +54,7 @@
 
 .comparisons :deep(li) {
   position: relative;
-  padding-left: 1.25em;
+  padding-left: 0.85em;
   margin: 0.35em 0;
   font-family: var(--ice-font-sans);
   font-weight: 500;

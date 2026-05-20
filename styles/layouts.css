@@ -45,6 +45,9 @@
 .slidev-layout table {
   border-collapse: collapse;
   width: 100%;
+  font-family: var(--ice-font-sans);
+  font-weight: 500;
+  font-size: 22pt;
 }
 
 .slidev-layout th,
@@ -55,11 +58,10 @@
 }
 
 .slidev-layout th {
-  color: var(--ice-fg-muted);
-  font-weight: 600;
-  font-size: 0.85em;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  background: #7B31FE;
+  color: white;
+  font-weight: 700;
+  border-bottom: none;
 }
 
 .slidev-layout kbd {

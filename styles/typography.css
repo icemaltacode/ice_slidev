@@ -3,7 +3,7 @@
 .em {
   font-family: var(--ice-font-sans);
   font-weight: 900;
-  font-size: 33pt;
+  font-size: inherit;
   color: #7B31FE;
 }
 
@@ -21,7 +21,7 @@
 .ui {
   font-family: var(--ice-font-sans);
   font-weight: 700;
-  font-size: 33pt;
+  font-size: inherit;
   color: black;
   background: #dfd2fe;
   padding: 0.1em 0.45em;
@@ -33,7 +33,7 @@
 .code {
   font-family: 'Menlo', ui-monospace, monospace;
   font-weight: 400;
-  font-size: 29pt;
+  font-size: inherit;
   color: #7B31FE;
 }
 

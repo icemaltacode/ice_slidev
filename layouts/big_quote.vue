@@ -48,4 +48,11 @@
   color: #848594;
   line-height: 1.2;
 }
+
+/* Markdown wraps slot content in <p>; global .slidev-layout p sets
+   color: var(--ice-fg) which goes light in dark mode. Inherit instead. */
+.bq-attribution :deep(p) {
+  color: inherit;
+  margin: 0;
+}
 </style>

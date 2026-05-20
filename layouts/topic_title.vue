@@ -12,7 +12,7 @@ import bgImage from '../assets/bg_main.png'
       </div>
       <div class="tt-number">
         <slot name="number">
-          <p>1.1</p>
+          <p>#1.1</p>
         </slot>
       </div>
     </div>

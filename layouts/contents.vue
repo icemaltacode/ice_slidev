@@ -3,14 +3,14 @@ import iceLogo from '../assets/ice_logo.png'
 
 withDefaults(
   defineProps<{
-    unit?: string | number
+    topic?: string | number
   }>(),
-  { unit: '1.1' },
+  { topic: '1.1' },
 )
 </script>
 
 <template>
-  <div class="slidev-layout ice-contents" :style="{ '--unit-prefix': `'${unit}.'` }">
+  <div class="slidev-layout ice-contents" :style="{ '--topic-prefix': `'${topic}.'` }">
     <img :src="iceLogo" class="ct-logo" alt="ICE" />
     <div class="ct-body">
       <slot>
@@ -29,7 +29,7 @@ withDefaults(
     </div>
     <div class="ct-unit">
       <span class="ct-unit-bar"></span>
-      <span class="ct-unit-text">Unit #{{ unit }}</span>
+      <span class="ct-unit-text">Topic #{{ topic }}</span>
     </div>
   </div>
 </template>
@@ -93,7 +93,7 @@ withDefaults(
 }
 
 .ct-body :deep(li)::before {
-  content: var(--unit-prefix) counter(item);
+  content: var(--topic-prefix) counter(item);
   display: block;
   width: fit-content;
   color: white;

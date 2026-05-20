@@ -8,9 +8,11 @@ import squiggle from '../assets/squiggle.png'
     <img :src="quotes" class="bqa-quotes" alt="" />
     <div class="bqa-quote">
       <slot>
-        <p>I like big butts and I cannot lie</p>
-        <p class="bqa-attribution">&mdash; Sir Mix-a-Lot</p>
+        <h1>&ldquo;I like big butts and I cannot lie&rdquo;</h1>
       </slot>
+    </div>
+    <div class="bqa-attribution">
+      &mdash; <slot name="attribution">Sir Mix-a-Lot</slot>
     </div>
     <img :src="squiggle" class="bqa-squiggle" alt="" />
   </div>
@@ -42,6 +44,7 @@ import squiggle from '../assets/squiggle.png'
   max-width: 80%;
 }
 
+.bqa-quote :deep(h1),
 .bqa-quote :deep(p) {
   font-family: var(--ice-font-sans);
   font-weight: 700;
@@ -52,11 +55,27 @@ import squiggle from '../assets/squiggle.png'
   letter-spacing: -0.01em;
 }
 
-.bqa-quote :deep(.bqa-attribution),
-.bqa-quote :deep(p + p) {
-  font-weight: 700;
-  font-size: 30pt;
-  margin-top: 0.1em;
+.bqa-attribution {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-family: var(--ice-font-sans);
+  font-weight: 500;
+  font-size: 20pt;
+  color: #b8b6c0;
+  letter-spacing: 0;
+}
+
+.bqa-attribution :deep(p) {
+  color: inherit;
+  margin: 0;
+  display: inline;
+}
+
+.bqa-attribution :deep(em) {
+  font-style: italic;
 }
 
 .bqa-squiggle {

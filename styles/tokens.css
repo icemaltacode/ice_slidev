@@ -4,20 +4,6 @@
   --ice-font-sans: 'Circular Std', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --ice-font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
-  --ice-primary: #0ea5e9;
-  --ice-primary-strong: #0369a1;
-  --ice-primary-soft: #e0f2fe;
-  --ice-fg: #0f172a;
-  --ice-fg-muted: #475569;
-  --ice-bg: #ffffff;
-  --ice-bg-soft: #f8fafc;
-  --ice-border: #e2e8f0;
-  --ice-code-bg: #f1f5f9;
-  --ice-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.05);
-  --ice-radius: 10px;
-}
-
-.dark {
   --ice-primary: #38bdf8;
   --ice-primary-strong: #7dd3fc;
   --ice-primary-soft: #075985;
@@ -28,4 +14,6 @@
   --ice-border: #1f2937;
   --ice-code-bg: #0f172a;
   --ice-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+  --ice-radius: 10px;
 }
+

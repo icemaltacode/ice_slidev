@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { useSlots } from 'vue'
+import { computed, useSlots } from 'vue'
 import iceLogo from '../assets/ice_logo_black.png'
 import imacFrame from '../assets/imac.png'
 import arrow from '../assets/arrow.png'
+import { useUnit } from '../composables/useUnit'
 
-withDefaults(
-  defineProps<{
-    unit?: string | number
-  }>(),
-  { unit: '1.1.1' },
-)
+const props = defineProps<{
+  unit?: string | number
+}>()
+
+const inheritedUnit = useUnit()
+const unit = computed(() => props.unit ?? inheritedUnit.value ?? '1.1.1')
 
 const slots = useSlots()
 </script>
@@ -84,6 +85,37 @@ const slots = useSlots()
   color: black;
   line-height: 1.25;
   margin: 0;
+}
+
+.cd-body :deep(ul) {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.cd-body :deep(ul ul) {
+  margin-top: 0.3em;
+  padding-left: 1em;
+}
+
+.cd-body :deep(li) {
+  position: relative;
+  padding-left: 1em;
+  margin: 0.3em 0;
+  font-family: var(--ice-font-sans);
+  font-weight: 700;
+  font-size: 28pt;
+  color: black;
+  line-height: 1.25;
+}
+
+.cd-body :deep(li)::before {
+  content: '-';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: inherit;
+  font-weight: 500;
 }
 
 .cd-arrow {
@@ -175,7 +207,7 @@ const slots = useSlots()
 
 .cd-annotations :deep(ul) {
   list-style: none;
-  padding-left: 1.25em;
+  padding-left: 0.85em;
   margin: 0;
 }
 

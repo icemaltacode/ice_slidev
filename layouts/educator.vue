@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import iceLogo from '../assets/ice_logo_black.png'
-import personEye from '../assets/person_eye.png'
 </script>
 
 <template>
@@ -23,14 +22,12 @@ import personEye from '../assets/person_eye.png'
       <div class="ed-person-photo">
         <slot name="photo1" />
       </div>
-      <img :src="personEye" class="ed-person-eye" alt="" />
     </div>
 
     <div class="ed-person ed-person-2">
       <div class="ed-person-photo">
         <slot name="photo2" />
       </div>
-      <img :src="personEye" class="ed-person-eye" alt="" />
     </div>
   </div>
 </template>
@@ -73,7 +70,7 @@ import personEye from '../assets/person_eye.png'
 
 .ed-body :deep(li) {
   position: relative;
-  padding-left: 1.5em;
+  padding-left: 1em;
   margin: 0.4em 0;
   font-family: var(--ice-font-sans);
   font-weight: 500;
@@ -96,18 +93,35 @@ import personEye from '../assets/person_eye.png'
   font-size: 26pt;
 }
 
+/* Loose markdown lists wrap item content in <p>; without this override
+   the global .slidev-layout p { color: var(--ice-fg) } takes over and
+   the headers fade out in dark mode. */
+.ed-body :deep(p) {
+  color: black;
+  margin: 0;
+}
+
 .ed-person {
   position: absolute;
-  width: 22%;
+  width: 30%;
 }
 
 .ed-person-photo {
-  width: 70%;
+  width: 90%;
   margin: 0 auto;
   aspect-ratio: 1 / 1;
   background: #f2b960;
   border-radius: 50%;
   overflow: hidden;
+  box-shadow:
+    0 0 0 4px #ffffff,
+    0 16px 36px rgba(15, 23, 42, 0.18);
+}
+
+.ed-person-photo :deep(p) {
+  width: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 .ed-person-photo :deep(img) {
@@ -117,20 +131,13 @@ import personEye from '../assets/person_eye.png'
   display: block;
 }
 
-.ed-person-eye {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin-top: -8%;
-}
-
 .ed-person-1 {
-  right: 12%;
-  top: 6%;
+  right: 4%;
+  top: 4%;
 }
 
 .ed-person-2 {
-  right: 22%;
-  top: 46%;
+  right: 18%;
+  top: 38%;
 }
 </style>

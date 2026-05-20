@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import iceLogo from '../assets/ice_logo.png'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
+    startYear?: number | string
     dates?: string
   }>(),
-  { dates: () => `2023 - ${new Date().getFullYear()}` },
+  { startYear: 2023 },
+)
+
+const dates = computed(
+  () => props.dates ?? `${props.startYear} - ${new Date().getFullYear()}`,
 )
 </script>
 

@@ -3,7 +3,12 @@
   "version": "0.0.1",
   "description": "ICE Malta course material theme for Slidev",
   "type": "module",
-  "keywords": ["slidev-theme", "slidev", "ice", "ice-malta"],
+  "keywords": [
+    "slidev-theme",
+    "slidev",
+    "ice",
+    "ice-malta"
+  ],
   "engines": {
     "slidev": ">=52.0.0"
   },
@@ -12,6 +17,7 @@
     "demo:build": "slidev build example/slides.md"
   },
   "dependencies": {
+    "appshots": "^1.2.1",
     "qrcode.vue": "^3.9.1"
   },
   "devDependencies": {
@@ -27,7 +33,7 @@
     "templates"
   ],
   "slidev": {
-    "colorSchema": "both",
+    "colorSchema": "light",
     "defaults": {
       "highlighter": "shiki",
       "transition": "slide-left",

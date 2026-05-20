@@ -2,7 +2,6 @@
 import { useSlots } from 'vue'
 import QrcodeVue from 'qrcode.vue'
 import iceLogo from '../assets/ice_logo_black.png'
-import tabletFrame from '../assets/tablet.png'
 
 withDefaults(
   defineProps<{
@@ -45,17 +44,15 @@ const slots = useSlots()
       <div class="sa-qr-url">{{ url }}</div>
     </div>
 
-    <div class="sa-tablet">
-      <img :src="tabletFrame" class="sa-tablet-frame" alt="" />
-      <div class="sa-tablet-screen">
+    <div class="sa-right">
+      <div class="sa-caption">
+        <slot name="caption">{{ caption }}</slot>
+      </div>
+      <div class="sa-tablet">
         <slot name="screen">
           <div class="sa-tablet-placeholder">Tablet screen content</div>
         </slot>
       </div>
-    </div>
-
-    <div class="sa-caption">
-      <slot name="caption">{{ caption }}</slot>
     </div>
   </div>
 </template>
@@ -135,44 +132,44 @@ const slots = useSlots()
   color: black;
 }
 
-.sa-tablet {
+.sa-right {
   position: absolute;
-  right: 4rem;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 8.5rem;
+  bottom: 0;
   width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
 }
 
-.sa-tablet-frame {
-  width: 100%;
-  display: block;
-  position: relative;
-  z-index: 2;
+.sa-caption {
+  text-align: center;
+  font-family: var(--ice-font-sans);
+  font-weight: 500;
+  font-size: 26pt;
+  color: black;
+  letter-spacing: 0;
 }
 
-.sa-tablet-screen {
-  position: absolute;
-  top: 3%;
-  left: 4%;
-  right: 4%;
-  bottom: 3%;
-  z-index: 1;
-  overflow: hidden;
-  border-radius: 1.5%;
-  background: white;
+.sa-tablet {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
-.sa-tablet-screen :deep(img) {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.sa-tablet :deep(img) {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   display: block;
 }
 
 .sa-tablet-placeholder {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  aspect-ratio: 4 / 3;
   background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border-radius: 2.5% / 3.5%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,19 +177,5 @@ const slots = useSlots()
   font-family: var(--ice-font-sans);
   font-weight: 500;
   font-size: 22pt;
-}
-
-.sa-caption {
-  position: absolute;
-  /* Match tablet horizontal bounds: left = tablet's left edge, right = tablet's right edge */
-  left: calc(50% - 4rem);
-  right: 4rem;
-  bottom: 7rem;
-  text-align: center;
-  font-family: var(--ice-font-sans);
-  font-weight: 500;
-  font-size: 26pt;
-  color: black;
-  letter-spacing: 0;
 }
 </style>

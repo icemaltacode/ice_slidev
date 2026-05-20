@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { useSlots } from 'vue'
+import { computed, useSlots } from 'vue'
 import iceLogo from '../assets/ice_logo_black.png'
+import { useUnit } from '../composables/useUnit'
 
-withDefaults(
-  defineProps<{
-    unit?: string | number
-  }>(),
-  { unit: '1.1.1' },
-)
+const props = defineProps<{
+  unit?: string | number
+}>()
+
+const inheritedUnit = useUnit()
+const unit = computed(() => props.unit ?? inheritedUnit.value ?? '1.1.1')
 
 const slots = useSlots()
 </script>
@@ -95,13 +96,13 @@ const slots = useSlots()
 }
 
 .cwi-body :deep(ul ul) {
-  padding-left: 1.5em;
+  padding-left: 1em;
   margin-top: 0.25em;
 }
 
 .cwi-body :deep(li) {
   position: relative;
-  padding-left: 1.5em;
+  padding-left: 1em;
   margin: 0.2em 0;
   font-family: var(--ice-font-sans);
   font-weight: 500;
@@ -196,7 +197,7 @@ const slots = useSlots()
 
 .cwi-annotations :deep(ul) {
   list-style: none;
-  padding-left: 1.25em;
+  padding-left: 0.85em;
   margin: 0;
 }
 

@@ -1,9 +1,17 @@
 .slidev-layout :not(pre) > code {
-  background: var(--ice-code-bg);
-  border: 1px solid var(--ice-border);
-  border-radius: 6px;
-  padding: 0.1em 0.4em;
-  font-size: 0.9em;
+  font-family: 'Menlo', ui-monospace, monospace;
+  font-weight: 400;
+  font-size: inherit;
+  color: #7B31FE;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+:root {
+  --slidev-code-font-size: 18pt;
+  --slidev-code-line-height: 1.45;
 }
 
 .slidev-layout pre.shiki,
@@ -13,8 +21,10 @@
   border-radius: var(--ice-radius);
   padding: 1rem 1.25rem !important;
   box-shadow: var(--ice-shadow);
-  font-size: 0.92em;
-  line-height: 1.5;
+  font-size: 18pt;
+  line-height: 1.45;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .slidev-layout pre.shiki code,
@@ -24,3 +34,11 @@
   padding: 0 !important;
   font-size: inherit !important;
 }
+
+/* Per-block size modifiers — apply via fence option:
+   ```ts {class:'code-lg'}
+   The class lands on the wrapper div, so the variable cascades into
+   .slidev-code, where Slidev's own !important rule consumes it. */
+.code-lg { --slidev-code-font-size: 28pt; }
+.code-md { --slidev-code-font-size: 18pt; }
+.code-sm { --slidev-code-font-size: 12pt; }

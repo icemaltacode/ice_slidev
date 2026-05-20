@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { useSlots } from 'vue'
+import { computed, useSlots } from 'vue'
 import iceLogo from '../assets/ice_logo_black.png'
-import iphoneFrame from '../assets/iphone_frame.png'
 import arrow from '../assets/arrow.png'
+import { useUnit } from '../composables/useUnit'
 
-withDefaults(
-  defineProps<{
-    unit?: string | number
-  }>(),
-  { unit: '1.1.1' },
-)
+const props = defineProps<{
+  unit?: string | number
+}>()
+
+const inheritedUnit = useUnit()
+const unit = computed(() => props.unit ?? inheritedUnit.value ?? '1.1.1')
 
 const slots = useSlots()
 </script>
@@ -28,12 +28,9 @@ const slots = useSlots()
     <img :src="arrow" class="cph-arrow" alt="" />
 
     <div class="cph-phone">
-      <img :src="iphoneFrame" class="cph-frame" alt="" />
-      <div class="cph-screen">
-        <slot name="screen">
-          <div class="cph-screen-default"></div>
-        </slot>
-      </div>
+      <slot name="screen">
+        <div class="cph-screen-default"></div>
+      </slot>
     </div>
 
     <div v-if="slots.annotations" class="cph-annotations">
@@ -86,9 +83,40 @@ const slots = useSlots()
   margin: 0;
 }
 
+.cph-body :deep(ul) {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.cph-body :deep(ul ul) {
+  margin-top: 0.3em;
+  padding-left: 1em;
+}
+
+.cph-body :deep(li) {
+  position: relative;
+  padding-left: 1em;
+  margin: 0.3em 0;
+  font-family: var(--ice-font-sans);
+  font-weight: 700;
+  font-size: 28pt;
+  color: black;
+  line-height: 1.25;
+}
+
+.cph-body :deep(li)::before {
+  content: '-';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: inherit;
+  font-weight: 500;
+}
+
 .cph-arrow {
   position: absolute;
-  left: 48%;
+  left: 55%;
   top: 38%;
   width: 14%;
   height: auto;
@@ -98,36 +126,19 @@ const slots = useSlots()
 
 .cph-phone {
   position: absolute;
-  right: calc(5rem + 200px);
+  right: calc(5rem + 80px);
   top: 5rem;
-  bottom: 2rem;
-  width: 22%;
+  bottom: 0;
+  width: 24%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
-.cph-frame {
-  width: 100%;
-  height: 100%;
+.cph-phone :deep(img) {
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  display: block;
-  position: relative;
-  z-index: 2;
-}
-
-.cph-screen {
-  position: absolute;
-  top: 7%;
-  left: 5%;
-  right: 5%;
-  bottom: 7%;
-  z-index: 1;
-  overflow: hidden;
-  border-radius: 7% / 4%;
-}
-
-.cph-screen :deep(img) {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   display: block;
 }
 
@@ -141,6 +152,7 @@ const slots = useSlots()
     #1f1b4d 70%,
     #000 100%
   );
+  border-radius: 7% / 4%;
 }
 
 .cph-annotations {
@@ -179,7 +191,7 @@ const slots = useSlots()
 
 .cph-annotations :deep(ul) {
   list-style: none;
-  padding-left: 1.25em;
+  padding-left: 0.85em;
   margin: 0;
 }
 

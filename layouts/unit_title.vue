@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import bgImage from '../assets/bg_main.png'
+
+withDefaults(
+  defineProps<{
+    unit?: string | number
+  }>(),
+  { unit: '1.1.1' },
+)
 </script>
 
 <template>
@@ -12,7 +19,7 @@ import bgImage from '../assets/bg_main.png'
       </div>
       <div class="ut-number">
         <slot name="number">
-          <p>1.1.1</p>
+          <p>#{{ unit }}</p>
         </slot>
       </div>
     </div>
