@@ -14,7 +14,8 @@
   },
   "scripts": {
     "demo": "slidev example/slides.md --open",
-    "demo:build": "slidev build example/slides.md"
+    "demo:build": "slidev build example/slides.md",
+    "slide": "node scripts/slide.mjs --out example/slides.md"
   },
   "dependencies": {
     "appshots": "^1.2.1",
@@ -30,7 +31,9 @@
     "composables",
     "example",
     "layouts",
+    "scripts",
     "setup",
+    "starter",
     "styles",
     "templates"
   ],
@@ -42,5 +45,9 @@
       "canvasWidth": 1920,
       "aspectRatio": "16/9"
     }
+  },
+  "bin": {
+    "ice-slide": "scripts/slide.mjs",
+    "ice-deck-init": "scripts/init.mjs"
   }
 }

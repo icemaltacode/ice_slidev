@@ -1,83 +1,290 @@
 # slidev-theme-ice
 
-ICE Malta course material theme for [Slidev](https://sli.dev).
+ICE Malta course material theme for [Slidev](https://sli.dev). Layouts, styling
+and starter templates for building course decks.
 
-## Install
+## Quick start
+
+Four commands gets you a running deck:
 
 ```bash
-npm install slidev-theme-ice
+mkdir my-course && cd my-course
+npm init -y
+npm install -D @slidev/cli git+ssh://git@github.com/icemaltacode/ice_slidev.git
+npx ice-deck-init
 ```
 
-Then reference it in your deck's frontmatter:
+Then:
+
+```bash
+npm run dev
+```
+
+Your deck opens in the browser and live-reloads as you edit `slides.md`.
+
+> The theme is not on the public npm registry — it installs straight from the
+> private repo, so you need read access to `icemaltacode/ice_slidev` and an SSH
+> key on your GitHub account. If your `~/.ssh/config` uses a host alias for the
+> ICE account, swap the URL for
+> `git+ssh://git@github.com-ice/icemaltacode/ice_slidev.git`.
+
+`npx ice-deck-init` scaffolds the deck in the current directory. It never
+overwrites anything — re-running it is safe, and it just reports what it
+skipped. It creates:
+
+- **`slides.md`** — a starter deck with headmatter placeholders and one of each
+  structural slide, ready to edit.
+- **npm scripts** — `dev`, `build`, `export` and `slide`, added to your
+  `package.json`.
+- **`.gitignore`** — `node_modules`, `dist`, `.slidev`.
+
+| Script          | What it does                                  |
+| --------------- | --------------------------------------------- |
+| `npm run dev`   | Live-reloading dev server, opens the browser   |
+| `npm run build` | Static site into `dist/`                       |
+| `npm run export`| PDF export                                     |
+| `npm run slide` | Append a template slide (see below)            |
+
+## Adding slides
+
+Every layout has a matching starter template. Stamp one onto the end of your
+deck with:
+
+```bash
+npm run slide -- content_with_image
+```
+
+Pass several at once, and use `--list` to see what's available:
+
+```bash
+npm run slide -- unit_title content_plain content_with_code
+npm run slide -- --list
+```
+
+A stamped slide arrives with the right frontmatter and renders the layout's
+built-in placeholder content — replace it with your own. Edits happen on the
+copy in your `slides.md`; the master template in [templates/](templates/) is
+never touched.
+
+## Deck settings
+
+The headmatter at the top of `slides.md` configures the whole deck:
 
 ```yaml
 ---
 theme: ice
+title: Course Name Here
+info: |
+  One-line description, shown in the presenter view.
+author: Your Name
+mdc: true
+drawings:
+  persist: false
+layout: title
 ---
 ```
 
-## Templates
+Keep `mdc: true` — the theme's inline styles and image attributes depend on it.
+Canvas size (1920×1080), 16:9 aspect ratio, the light colour scheme, Shiki
+highlighting and the slide transition all come from the theme, so you don't
+need to set them.
 
-Pre-written starter slides live in [templates/](templates/). A consuming
-deck stamps a copy into its `slides.md` via `npm run slide -- <name>` —
-edits happen on the copy, not the master.
-
-Each template is a complete Slidev slide (frontmatter + body). Filename
-without `.md` is the template name.
+> **Gotcha:** don't put `---` inside a YAML comment in the headmatter. Slidev
+> splits slides on `---`, so a comment like `# --- settings ---` silently breaks
+> theme resolution and your deck renders unstyled. Plain `# comments` are fine.
 
 ## Layouts
 
-| Layout     | Use for                                |
-| ---------- | -------------------------------------- |
-| `default`  | Standard content with footer + page #  |
-| `cover`    | Title slide with accent bar + eyebrow  |
-| `section`  | Section dividers with accent underline |
-| `center`   | Single centered statement              |
-| `two-cols` | Two-column layout                      |
-| `quote`    | Pull quote with attribution            |
-| `end`      | Full-bleed gradient closer             |
+Set the layout per slide with `layout:` in that slide's frontmatter. Named
+slots are filled with MDC syntax — a `::slot_name::` line, then the content.
+
+### Structure
+
+| Layout          | Use for                                    | Frontmatter                            | Slots            |
+| --------------- | ------------------------------------------ | -------------------------------------- | ---------------- |
+| `title`         | Deck cover                                 | —                                      | `::footer::`     |
+| `module_title`  | Module divider                             | —                                      | `::number::`     |
+| `topic_title`   | Topic divider                              | —                                      | `::number::`     |
+| `contents`      | Topic agenda — items auto-numbered         | `topic` (e.g. `'1.1'`)                 | —                |
+| `unit_title`    | Unit divider — sets the inherited unit no.  | `unit` (e.g. `'1.1.1'`)                | `::number::`     |
+| `project_title` | Project or assignment intro                | `label` (default `Practical Project`)  | `::description::`|
+
+### Content
+
+All six take an optional `unit` and an optional `::annotations::` slot. If you
+omit `unit`, the slide inherits the number from the last `unit_title` slide —
+so set it once per unit and forget it.
+
+| Layout               | Use for                                | Extra slot   |
+| -------------------- | -------------------------------------- | ------------ |
+| `content_plain`      | Bullets, prose, tables, code           | —            |
+| `content_with_image` | Content left, image right              | `::image::`  |
+| `content_with_code`  | Content left, code right               | `::code::`   |
+| `content_phone`      | Content left, phone mockup right       | `::screen::` |
+| `content_tablet`     | Content left, tablet mockup right      | `::screen::` |
+| `content_desktop`    | Content left, desktop mockup right     | `::screen::` |
+
+```md
+---
+layout: content_with_image
+unit: '1.1.2'
+---
+
+# Slide Title
+
+- Your bullets here.
+
+::image::
+
+![A rubber duck](./ducky.webp)
+
+::annotations::
+
+An optional note printed beneath the slide body.
+```
+
+### Emphasis
+
+| Layout                          | Use for                                          | Slots              |
+| ------------------------------- | ------------------------------------------------ | ------------------ |
+| `statement` / `statement_alt`   | One short sentence, full bleed — two colourways   | —                  |
+| `big_fact` / `big_fact_alt`     | Big number (`#` heading) plus caption (paragraph) | —                  |
+| `big_quote` / `big_quote_alt`   | Pull quote as the `#` heading                     | `::attribution::`  |
+
+### Everything else
+
+| Layout          | Use for                                  | Frontmatter                | Slots                                |
+| --------------- | ---------------------------------------- | -------------------------- | ------------------------------------ |
+| `showcase`      | One hero image plus two supporting shots | —                          | `::main::` `::top::` `::bottom::`    |
+| `educator`      | Educator bio with two photos             | —                          | `::photo1::` `::photo2::`            |
+| `student_area`  | QR code linking to the student area      | `url`, `caption`           | `::title::` `::screen::` `::caption::`|
+| `closing_slide` | Copyright closer                         | `startYear`, `dates`       | —                                    |
+| `default`       | Plain slide with footer and page number  | —                          | —                                    |
+
+## Components and styling
+
+These are available on any slide without importing anything.
+
+**Columns.** Wrap each column in a `<div>`, with blank lines around the
+markdown inside so it still parses:
+
+```md
+<TwoColumns>
+
+<div>
+
+## Left
+
+- Point one.
+
+</div>
+
+<div>
+
+## Right
+
+- Point two.
+
+</div>
+
+</TwoColumns>
+```
+
+`<ThreeColumns>` works the same way. `<Comparisons>` lays out a grid for
+comparing several options side by side.
+
+**Inline character styles**, via MDC:
+
+| Syntax                | Renders as             |
+| --------------------- | ---------------------- |
+| `[terminology]{.em}`  | Emphasised term        |
+| `[Settings]{.ui}`     | A UI element name      |
+| `[npm install]{.code}`| Inline code            |
+
+**OS logos:** `<Logo name="mac" />`, `windows`, or `linux`.
+
+**Images** take utility classes — `![alt](./duck.webp){.w-60 .mr-auto}`. Use
+`mx-auto` to centre, `mr-auto` to left-align.
+
+**Code blocks** support size classes and step-through highlighting:
+
+````md
+```python {class:'code-md'}
+def greet(name):
+    return f"Hello, {name}!"
+```
+
+```python {all|2-3|6}
+# highlights everything, then lines 2-3, then line 6 as you advance
+```
+````
+
+Sizes are `code-lg`, `code-md` and `code-sm`.
+
+## Device mockups
+
+`<DeviceFrame>` wraps a screenshot in a device bezel at build time:
+
+```md
+<DeviceFrame src="./phone.png" device="iphone-6.3" />
+<DeviceFrame src="./tablet.png" device="ipad-13-alt" orientation="landscape" />
+```
+
+| Preset               | Resolution  | Devices                        |
+| -------------------- | ----------- | ------------------------------ |
+| `iphone-6.9`         | 1320×2868   | iPhone Air, 17/16 Pro Max      |
+| `iphone-6.9-alt`     | 1290×2796   | iPhone 16 Plus, 15 Pro Max     |
+| `iphone-6.3`         | 1206×2622   | iPhone 17 Pro, 17              |
+| `iphone-6.3-alt`     | 1179×2556   | iPhone 16 Pro, 16, 15 Pro      |
+| `iphone-6.1`         | 1170×2532   | iPhone 14, 13, 12              |
+| `iphone-5.5`         | 1242×2208   | iPhone 8 Plus, 7 Plus          |
+| `android-phone`      | 1080×1920   | Standard Android (16:9)        |
+| `android-phone-tall` | 1080×2400   | Modern Android (20:9)          |
+| `ipad-13`            | 2064×2752   | iPad Pro M5/M4                 |
+| `ipad-13-alt`        | 2048×2732   | iPad Pro 12.9" (6th–1st gen)   |
+| `ipad-11`            | 1668×2388   | iPad Pro 11", iPad Air         |
+| `ipad-11-alt`        | 1640×2360   | iPad (10th gen), iPad Air (M2) |
+| `android-tablet-10`  | 1600×2560   | 10" Android tablet             |
+
+## Assets
+
+Put images and videos next to `slides.md` and reference them relatively
+(`./ducky.webp`). Theme assets — the ICE logo, backgrounds, OS logos and the
+bundled fonts — ship with the theme and need nothing from you.
+
+## Reference deck
+
+[example/slides.md](example/slides.md) demonstrates every layout, component and
+styling feature in one deck. It is the fastest way to see what's available:
+
+```bash
+git clone git@github.com:icemaltacode/ice_slidev.git
+cd ice_slidev && npm install && npm run demo
+```
 
 ## Rebranding
 
-All colors and tokens live in [styles/tokens.css](styles/tokens.css). Edit
-that one file to retheme — light and dark schemes both supported.
+Every colour and design token lives in [styles/tokens.css](styles/tokens.css).
+Edit that one file to retheme; light and dark schemes are both supported.
 
-## Fonts (Circular Std)
+## Theme development
 
-The theme expects Circular Std as the sans family. Drop the `.woff2` files
-into [assets/fonts/](assets/fonts/) using these exact filenames:
-
-```
-CircularStd-Book.woff2
-CircularStd-BookItalic.woff2
-CircularStd-Medium.woff2
-CircularStd-MediumItalic.woff2
-CircularStd-Bold.woff2
-CircularStd-BoldItalic.woff2
-CircularStd-Black.woff2
-CircularStd-BlackItalic.woff2
-```
-
-The `@font-face` rules are defined in [styles/fonts.css](styles/fonts.css);
-weight mapping is Book→400, Medium→500, Bold→700, Black→900. Until the
-files are present the theme falls back to the system sans stack.
-
-> Circular Std is a commercial typeface licensed from Lineto. Do not commit
-> the font files to a public repository.
-
-## Local development
-
-To work on the theme against a sibling deck checkout, link it from the
-deck repo:
+To work on the theme against a deck you're writing, install the theme's own
+dependencies first, then link it from the deck:
 
 ```bash
-# from the deck repo
-npm link ../ice_slidev
+cd ice_slidev && npm install     # required — a linked theme resolves its
+                                 # dependencies from its own directory
+cd ../my-course && npm link ../ice_slidev
 ```
 
-The theme is plain Vue + CSS, and Slidev hot-reloads layout/style edits
-as long as the deck consumes it via `npm link` or the `file:` protocol.
+The theme is plain Vue and CSS, so Slidev hot-reloads layout and style edits
+with no build step.
 
 ## License
 
-MIT
+MIT.
+
+Circular Std is a commercial typeface licensed from Lineto and is bundled in
+[assets/fonts/](assets/fonts/). Keep this repository private and do not
+redistribute the font files.
