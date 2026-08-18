@@ -5,11 +5,12 @@ and starter templates for building course decks.
 
 ## Quick start
 
-Four commands gets you a running deck:
+Five commands gets you a running deck:
 
 ```bash
 mkdir my-course && cd my-course
 npm init -y
+echo 'allow-git=root' > .npmrc
 npm install -D @slidev/cli git+ssh://git@github.com/icemaltacode/ice_slidev.git
 npx ice-deck-init
 ```
@@ -22,10 +23,16 @@ npm run dev
 
 Your deck opens in the browser and live-reloads as you edit `slides.md`.
 
-> The theme is not on the public npm registry — it installs straight from the
-> private repo, so you need read access to `icemaltacode/ice_slidev` and an SSH
-> key on your GitHub account. If your `~/.ssh/config` uses a host alias for the
-> ICE account, swap the URL for
+> **Why the `.npmrc`?** The theme is not on the public npm registry — it
+> installs straight from the private repo. npm 12 refuses git dependencies by
+> default (`npm error code EALLOWGIT`), and `allow-git=root` re-enables them
+> for your own direct dependencies only, leaving transitive git deps blocked.
+> Commit the `.npmrc` with the deck so `npm install` keeps working for everyone
+> who clones it. On npm 11 and earlier the setting is harmless.
+
+> **Access.** You need read access to `icemaltacode/ice_slidev` and an SSH key
+> on your GitHub account. If your `~/.ssh/config` uses a host alias for the ICE
+> account, swap the URL for
 > `git+ssh://git@github.com-ice/icemaltacode/ice_slidev.git`.
 
 `npx ice-deck-init` scaffolds the deck in the current directory. It never
@@ -36,6 +43,7 @@ skipped. It creates:
   structural slide, ready to edit.
 - **npm scripts** — `dev`, `build`, `export` and `slide`, added to your
   `package.json`.
+- **`.npmrc`** — with `allow-git=root`, if you don't already have one.
 - **`.gitignore`** — `node_modules`, `dist`, `.slidev`.
 
 | Script          | What it does                                  |

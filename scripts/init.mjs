@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Scaffold a new deck in the current directory: starter slides.md,
-// wired-up npm scripts, and a sensible .gitignore. Never overwrites.
+// Scaffold a new deck in the current directory: starter slides.md, wired-up
+// npm scripts, .npmrc and .gitignore. Never overwrites existing settings.
 import { copyFileSync, existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -41,7 +41,23 @@ if (!existsSync('package.json')) {
   }
 }
 
-// 3. .gitignore
+// 3. .npmrc — npm 12+ refuses git dependencies unless allow-git is set, and
+// this deck depends on the theme over git. Commit it alongside package.json
+// so `npm install` keeps working for everyone who clones the deck.
+if (!existsSync('.npmrc')) {
+  writeFileSync('.npmrc', 'allow-git=root\n')
+  done.push('created .npmrc (allow-git=root)')
+} else {
+  const npmrc = readFileSync('.npmrc', 'utf8')
+  if (/^\s*allow-git\s*=/m.test(npmrc)) {
+    skipped.push('.npmrc already sets allow-git')
+  } else {
+    writeFileSync('.npmrc', `${npmrc.replace(/\n*$/, '\n')}allow-git=root\n`)
+    done.push('added allow-git=root to .npmrc')
+  }
+}
+
+// 4. .gitignore
 if (existsSync('.gitignore')) {
   skipped.push('.gitignore already exists')
 } else {
