@@ -18,10 +18,15 @@ npx ice-deck-init
 Then:
 
 ```bash
+npm install
 npm run dev
 ```
 
 Your deck opens in the browser and live-reloads as you edit `slides.md`.
+
+> The second `npm install` is not a typo — `ice-deck-init` adds dependency
+> overrides to your `package.json`, and npm only applies those on the next
+> install.
 
 > **Why the `.npmrc`?** The theme is not on the public npm registry — it
 > installs straight from the private repo. npm 12 refuses git dependencies by
@@ -43,6 +48,8 @@ skipped. It creates:
   structural slide, ready to edit.
 - **npm scripts** — `dev`, `build`, `export` and `slide`, added to your
   `package.json`.
+- **dependency overrides** — pinning patched versions of `sharp` and
+  `dompurify` (see [Security](#security)).
 - **`.npmrc`** — with `allow-git=root`, if you don't already have one.
 - **`.gitignore`** — `node_modules`, `dist`, `.slidev`.
 
@@ -274,6 +281,43 @@ cd ice_slidev && npm install && npm run demo
 
 Every colour and design token lives in [styles/tokens.css](styles/tokens.css).
 Edit that one file to retheme; light and dark schemes are both supported.
+
+## Security
+
+A fresh deck installs ~690 packages, almost all of them Slidev's toolchain, so
+`npm audit` has plenty to say. `ice-deck-init` writes three overrides into your
+`package.json` to clear what is actually fixable:
+
+```json
+"overrides": {
+  "sharp": "^0.35.3",
+  "dompurify": "^3.4.13",
+  "js-yaml@4": "^4.3.1"
+}
+```
+
+`sharp` reaches the deck through `appshots`, which powers `<DeviceFrame>` and
+pins `^0.33.5` — a range carrying four high-severity libvips CVEs. `dompurify`
+arrives via `monaco-editor` inside Slidev, and `js-yaml` via the Slidev parser.
+The `js-yaml@4` key scopes that last one to the 4.x line, since the tree also
+contains an unaffected `js-yaml@3` that must not be dragged across a major.
+Overrides have to live in the deck because npm only honours them from the root
+project; the theme cannot patch these for its consumers.
+
+That takes a new deck from 11 advisories to 4. The remaining four are all one
+issue: a denial-of-service in `image-size`, pulled in by `pptxgenjs` for
+Slidev's PowerPoint export. **Every published version of `image-size` is
+affected**, so no override fixes it, and npm's suggested `--force` remedy
+downgrades `@slidev/cli` by three years. It is reachable only by exporting a
+deck to PPTX with a deliberately malformed ICNS, JXL or HEIF image, which is
+not a threat model that applies to course material you assembled yourself.
+Leave it, and revisit when `pptxgenjs` moves on.
+
+You may also see npm report a blocked install script for `sharp`. `sharp` ships
+its binary as a prebuilt optional dependency, so the script is only a fallback
+check and refusing it changes nothing — verified by building a deck with
+`<DeviceFrame>` and confirming the frames render. `ice-deck-init` records that
+decision as `"allowScripts": { "sharp": false }` so npm stops asking.
 
 ## Theme development
 

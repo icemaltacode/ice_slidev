@@ -25,19 +25,52 @@ const DECK_SCRIPTS = {
   slide: 'ice-slide',
 }
 
+// Pull transitive dependencies onto patched versions. npm only honours
+// overrides from the root project, so every deck needs its own copy — the
+// theme cannot fix these on its consumers' behalf.
+const DECK_OVERRIDES = {
+  'sharp': '^0.35.3',      // libvips CVEs; appshots pins ^0.33.5
+  'dompurify': '^3.4.13',  // XSS advisories, reached via monaco-editor
+  'js-yaml@4': '^4.3.1',   // DoS; scoped to 4.x so js-yaml@3 users are left alone
+}
+
+// sharp ships a prebuilt binary as an optional dependency, so its install
+// script is only a fallback check and is safe to refuse.
+const DECK_ALLOW_SCRIPTS = { sharp: false }
+
 if (!existsSync('package.json')) {
   skipped.push('no package.json — run `npm init -y` first, then re-run this')
 } else {
   const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
+  const changes = []
+
   pkg.scripts ??= {}
-  const added = []
+  const addedScripts = []
   for (const [name, cmd] of Object.entries(DECK_SCRIPTS)) {
     if (pkg.scripts[name]) skipped.push(`script "${name}" already set`)
-    else { pkg.scripts[name] = cmd; added.push(name) }
+    else { pkg.scripts[name] = cmd; addedScripts.push(name) }
   }
-  if (added.length) {
+  if (addedScripts.length) changes.push(`scripts: ${addedScripts.join(', ')}`)
+
+  pkg.overrides ??= {}
+  const addedOverrides = []
+  for (const [name, range] of Object.entries(DECK_OVERRIDES)) {
+    if (pkg.overrides[name]) skipped.push(`override "${name}" already set`)
+    else { pkg.overrides[name] = range; addedOverrides.push(name) }
+  }
+  if (addedOverrides.length) changes.push(`overrides: ${addedOverrides.join(', ')}`)
+
+  pkg.allowScripts ??= {}
+  const addedAllows = []
+  for (const [name, allow] of Object.entries(DECK_ALLOW_SCRIPTS)) {
+    if (name in pkg.allowScripts) skipped.push(`allowScripts "${name}" already set`)
+    else { pkg.allowScripts[name] = allow; addedAllows.push(name) }
+  }
+  if (addedAllows.length) changes.push(`allowScripts: ${addedAllows.join(', ')}`)
+
+  if (changes.length) {
     writeFileSync('package.json', `${JSON.stringify(pkg, null, 2)}\n`)
-    done.push(`wired npm scripts: ${added.join(', ')}`)
+    done.push(`wired package.json — ${changes.join('; ')}`)
   }
 }
 
@@ -67,4 +100,8 @@ if (existsSync('.gitignore')) {
 
 for (const d of done) console.log(`  ✓ ${d}`)
 for (const s of skipped) console.log(`  · skipped: ${s}`)
-console.log('\nNext: npm run dev')
+
+// Overrides only take effect on the next install, and this normally runs
+// straight after the first one.
+const needsReinstall = done.some(d => d.includes('overrides'))
+console.log(needsReinstall ? '\nNext: npm install && npm run dev' : '\nNext: npm run dev')
