@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import bgImage from '../assets/bg_main.png'
+import bgImage from '../assets/bg_main.webp'
 </script>
 
 <template>

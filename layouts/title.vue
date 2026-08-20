@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import bgImage from '../assets/bg_main.png'
+import bgImage from '../assets/bg_main.webp'
 import iceLogo from '../assets/ice_logo.png'
 import squiggle from '../assets/squiggle.png'
 </script>
