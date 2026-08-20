@@ -33,3 +33,21 @@
 /* Dev-only, but it sits in the same bar and is not a student's business either. */
 .slidev-icon-btn[title="Hide editor"],
 .slidev-icon-btn[title="Show editor"] { display: none !important; }
+
+/* THE DIVIDERS.
+ *
+ * Slidev draws four vertical rules to group the bar, and they are positioned rather than
+ * derived: hiding the controls between two of them leaves the two sitting next to each
+ * other, reading as a double separator. Adjacent-sibling CSS cannot fix that, because the
+ * hidden buttons are still siblings between them - `display: none` removes a box, not a
+ * node.
+ *
+ * So all four go, and the one immediately before the slide counter is put back: with six
+ * controls left there is nothing to group, but the counter is not a control and still
+ * wants separating. If `:has()` is ever unavailable the bar simply has no rules in it,
+ * which is the right way for this to degrade.
+ *
+ * Matched on the utility classes because a divider is a bare <div> with no other handle -
+ * the one place in here where an implementation detail is unavoidable. */
+div.w-1px.opacity-10.bg-current { display: none !important; }
+div.w-1px.opacity-10.bg-current:has(+ div.px2) { display: block !important; }
