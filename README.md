@@ -267,6 +267,16 @@ Put images and videos next to `slides.md` and reference them relatively
 (`./ducky.webp`). Theme assets — the ICE logo, backgrounds, OS logos and the
 bundled fonts — ship with the theme and need nothing from you.
 
+**Keep theme assets small, and prefer WebP.** Every asset a layout imports is
+bundled into *every deck built with this theme*, so its size is multiplied by the
+number of decks, not paid once. `assets/bg_main.webp` is the background of four
+layouts — `title`, `module_title`, `topic_title`, `unit_title` — so it lands in
+essentially every deck. It was a 3.8MB PNG until Aug 2026, which came to ~211MB
+across one course's 59 decks and was the single largest item in the published
+site. At quality 90 it is 522KB and the difference is not visible on a projector.
+Don't reintroduce a PNG for it. If you add a full-bleed asset to a frequently-used
+layout, check what it weighs first.
+
 ## Reference deck
 
 [example/slides.md](example/slides.md) demonstrates every layout, component and
