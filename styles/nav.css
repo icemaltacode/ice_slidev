@@ -1,0 +1,35 @@
+/* Which of Slidev's own controls a student is offered.
+ *
+ * WHY HERE, IN THE THEME. A deck is watched in more places than the player's frame: "Open
+ * in a tab" from a slide step, the published /slides/<topic>/ URL, and `slidev dev` while
+ * a deck is being written. The same set of controls should be on offer in all of them, so
+ * this cannot be CSS the player injects into its iframe - that would leave a fuller bar
+ * one click away and make "what can a student do" depend on how they got there.
+ *
+ * WHY CSS AND NOT HEADMATTER. `download: false`, `info: false` and `presenter: false` are
+ * the first-class switches for three of these, and they are per-deck: 79 topic decks plus
+ * their frames, restated every time a deck is added, in a repo the platform does not own.
+ * One rule set in the theme is one place to change it.
+ *
+ * MATCHED ON `title` rather than on the icon class. Slidev writes a title on every one of
+ * these buttons, and it is the thing that describes what the button does - an icon name is
+ * an implementation detail that changes when someone picks a nicer glyph. The cost is that
+ * these strings are English UI copy from @slidev/client: if a control reappears after a
+ * Slidev upgrade, its title was reworded, and the fix is to re-read NavControls.vue.
+ *
+ * KEPT, deliberately: fullscreen, previous, next, slide overview, the drawing toolbar,
+ * More Options, and the slide counter.
+ */
+.slidev-icon-btn[title="Switch to light mode theme"],
+.slidev-icon-btn[title="Switch to dark mode theme"],
+.slidev-icon-btn[title="Presenter Mode"],
+.slidev-icon-btn[title="Play Mode"],
+.slidev-icon-btn[title="Toggle Presenter Layout"],
+.slidev-icon-btn[title="Change sync settings"],
+.slidev-icon-btn[title="Sync Mode"],
+.slidev-icon-btn[title="Show info"],
+.slidev-icon-btn[title="Download as PDF"],
+.slidev-icon-btn[title="Browser Exporter"],
+/* Dev-only, but it sits in the same bar and is not a student's business either. */
+.slidev-icon-btn[title="Hide editor"],
+.slidev-icon-btn[title="Show editor"] { display: none !important; }
