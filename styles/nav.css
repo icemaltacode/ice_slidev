@@ -51,3 +51,31 @@
  * the one place in here where an implementation detail is unavoidable. */
 div.w-1px.opacity-10.bg-current { display: none !important; }
 div.w-1px.opacity-10.bg-current:has(+ div.px2) { display: block !important; }
+
+/* THE BAR ITSELF, WHICH SLIDEV HIDES ON A WIDE ENOUGH SCREEN.
+ *
+ * `play.vue` renders the controls wrapper as `opacity-0 hover:opacity-100` and only forces
+ * it visible when `persistNav` is true, which is:
+ *
+ *     isScreenVertical = window.height - window.width / (16/9) > 120
+ *
+ * That is a presenter's rule - fade the furniture on a projector, keep it on a phone - and
+ * it is the wrong one for material a student reads. Worse, it is a knife edge right where
+ * real windows sit:
+ *
+ *     1920x1080 fullscreen                       0.0  hover-only
+ *     1512x982  maximised laptop with chrome   131.5  persistent
+ *     1512x900  the same laptop, a bit shorter  49.5  hover-only
+ *     ~900x700  the player's slides pane       193.8  persistent
+ *
+ * So the controls are always there inside the player, and vanish the moment a deck is
+ * opened in a tab and the window is made large. The bad case is Slidev's own fullscreen
+ * button: pressing it takes the viewport to exactly 1080p, which drops below the threshold
+ * and hides the control that would take you back out again. Nothing on screen then says
+ * Escape is the way out.
+ *
+ * Matched on structure rather than on the utility classes: `#slide-container` holds
+ * `#slide-content` and the controls slot, and nothing else. The id only exists on the main
+ * deck view, so the overview grid's mini-containers are untouched.
+ */
+#slide-container > div:not(#slide-content) { opacity: 1 !important; }
