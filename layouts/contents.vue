@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import iceLogo from '../assets/ice_logo.png'
 
+/* `kind` is the WORD in the corner label; `topic` is the number beside it and the prefix
+ * the list items count from. Two props rather than one because this layout is shared: an
+ * ICE x DataCamp deck opens a MODULE with it now, while other decks still open a topic, and
+ * hard-coding either word puts the wrong one on someone's slide. The value prop keeps its
+ * old name so every existing deck's frontmatter still works. */
 withDefaults(
   defineProps<{
     topic?: string | number
+    kind?: string
   }>(),
-  { topic: '1.1' },
+  { topic: '1.1', kind: 'Topic' },
 )
 </script>
 
@@ -29,7 +35,7 @@ withDefaults(
     </div>
     <div class="ct-unit">
       <span class="ct-unit-bar"></span>
-      <span class="ct-unit-text">Topic #{{ topic }}</span>
+      <span class="ct-unit-text">{{ kind }} #{{ topic }}</span>
     </div>
   </div>
 </template>

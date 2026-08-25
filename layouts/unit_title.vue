@@ -5,7 +5,7 @@ withDefaults(
   defineProps<{
     unit?: string | number
   }>(),
-  { unit: '1.1.1' },
+  { unit: '1.1' },
 )
 </script>
 
