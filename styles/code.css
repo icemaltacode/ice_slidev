@@ -42,3 +42,34 @@
 .code-lg { --slidev-code-font-size: 28pt; }
 .code-md { --slidev-code-font-size: 18pt; }
 .code-sm { --slidev-code-font-size: 12pt; }
+
+/* DIM BY TOKEN, NOT BY LINE, so part of a line can stay bright.
+ *
+ * The ICE PowerPoint decks build one program up across several slides, showing the code so
+ * far in grey and the bit just added in its syntax colours. Usually that bit is a whole
+ * line, which Slidev already expresses: ```python {4,5} highlights those lines and dims the
+ * rest. But 36 lines across the ONEY decks add only PART of a line - `, sharex=True` onto an
+ * existing `plt.subplots(2, 1)` - and Slidev cannot say that, because it dims with
+ * `opacity: 0.3` on the `.line` element and a child can never exceed its parent's opacity.
+ *
+ * So the dim moves off the line and onto its tokens. Same appearance, and now a token can
+ * opt back out - which is what `# [!code word:, sharex=True]` does, via the Shiki notation
+ * transformer registered in setup/shiki.ts.
+ *
+ * `> span` rather than a descendant selector: nesting the opacity would compound it, and
+ * two dimmed ancestors read as three-tenths of three-tenths. */
+.slidev-code .slidev-code-dishonored { opacity: 1; }
+.slidev-code .slidev-code-dishonored > span { opacity: 0.3; }
+.slidev-code .slidev-code-dishonored > span.highlighted-word,
+.slidev-code .slidev-code-dishonored > .highlighted-word > span { opacity: 1; }
+
+/* A BLOCK WHERE ONLY PART OF A LINE IS NEW, and no whole line is.
+ *
+ * Slidev only marks lines `dishonored` when some other line was highlighted, so a block
+ * whose only change is `, sharex=True` on its single line has nothing to dim against and
+ * renders entirely bright. Writing a highlight set that names a line past the end does work
+ * - `{2}` on a one-line block - and it is a magic number in the markdown that reads as a
+ * mistake. This says the same thing structurally: a block that marks a word but highlights
+ * no line dims everything except the marked words. */
+.slidev-code:has(.highlighted-word):not(:has(.slidev-code-highlighted))
+  .line > span:not(.highlighted-word) { opacity: 0.3; }

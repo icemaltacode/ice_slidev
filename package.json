@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "appshots": "^1.2.1",
-    "qrcode.vue": "^3.9.1"
+    "qrcode.vue": "^3.9.1",
+    "@shikijs/transformers": "^4.4.3"
   },
   "devDependencies": {
     "@slidev/cli": "^52.19.0",
