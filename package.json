@@ -43,7 +43,8 @@
     "setup",
     "starter",
     "styles",
-    "templates"
+    "templates",
+    "uno.config.ts"
   ],
   "slidev": {
     "colorSchema": "light",
