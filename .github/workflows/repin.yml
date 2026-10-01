@@ -1,0 +1,78 @@
+# Move every course onto this theme when it changes.
+#
+# A course depends on the theme as `github:icemaltacode/ice_slidev`, and npm writes the COMMIT
+# it resolved into the course's slides/package-lock.json. `npm ci` then installs that commit
+# forever, so a change here reached a course only when somebody bumped its lockfile by hand.
+# Only one course ever was: FIAU and both Data Analyst courses went a month on a theme from
+# before an educator's slide annotations could reach a class, and it looked like a bug in the
+# player because the one course it was tested on was the one that had been bumped.
+#
+# So a push here commits the new pin into every course (repin.sh), and each course's own
+# publish does the rest: a lockfile change under slides/ rebuilds every deck it has. The commit
+# lands in the course's history, so which theme built a course's decks is a question git
+# answers.
+#
+# PUSHING HERE IS A DEPLOY of every course's slides, a few minutes later. A publish replaces
+# each deck's files, so a student with a deck already open in a lesson can lose the parts of
+# it that load later. Push theme changes outside class.
+#
+# Paths no course deck loads do not trigger it - every run rebuilds every deck of every
+# course, and a README edit should not. IGNORED rather than listed, so a new directory
+# triggers by default: a needless rebuild is visible, a missed one is how this started.
+
+name: repin courses
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/**'
+      - 'example/**'
+      - 'starter/**'
+      - 'scripts/**'
+      - 'templates/**'
+      - '*.md'
+      - 'package-lock.json'
+      - '.gitignore'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: Find the courses and say what would move, without pushing anything.
+        type: boolean
+        default: true
+
+# `write` for the `pinned` tag only - see repin.sh. The courses are written with REPIN_TOKEN,
+# because this token cannot reach another repository, and a push made with it would not start
+# the course's publish even if it could.
+permissions:
+  contents: write
+
+# One at a time. Two theme pushes close together would race to push the same lockfiles; in
+# turn, the second finds the first already did its work.
+concurrency:
+  group: repin
+  cancel-in-progress: false
+
+jobs:
+  repin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0     # the theme commits a course is moved over go in its commit message
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+
+      # The npm the lockfiles are written with locally. Node 22 ships npm 10, which would
+      # rewrite the parts of a lockfile it formats differently, and every repin would carry
+      # that noise into each course's history.
+      - run: npm install -g npm@12
+
+      - name: Repin every course
+        env:
+          GH_TOKEN: ${{ secrets.REPIN_TOKEN }}
+          DRY_RUN: ${{ inputs.dry-run == true && 'true' || 'false' }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: .github/repin.sh

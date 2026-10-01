@@ -329,6 +329,23 @@ check and refusing it changes nothing — verified by building a deck with
 `<DeviceFrame>` and confirming the frames render. `ice-deck-init` records that
 decision as `"allowScripts": { "sharp": false }` so npm stops asking.
 
+## Releasing
+
+A push to `main` is a release to every course. The `repin courses` workflow
+([.github/workflows/repin.yml](.github/workflows/repin.yml)) commits the new theme
+pin into each course repo, and each course's publish then rebuilds and republishes
+all of its decks. Push outside class: a publish replaces each deck's files, so a
+student with a deck already open can lose the parts of it that load later.
+
+Pushes that touch only `example/`, `starter/`, `scripts/`, `templates/`, a root
+Markdown file or `.github/` release nothing, because no course deck loads them.
+
+The workflow reaches the courses through `REPIN_TOKEN`, a fine-grained token on the
+`icemaltacode` account with *Contents: Read and write* on each course repo. A new
+course with decks has to be added to that token; until it is, its publish warns
+that its theme is behind the `pinned` tag. Run the workflow by hand with *dry run*
+ticked to see which courses it finds and whether it can push to each.
+
 ## Theme development
 
 To work on the theme against a deck you're writing, install the theme's own
