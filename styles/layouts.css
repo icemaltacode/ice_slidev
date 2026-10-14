@@ -66,6 +66,7 @@
 
 .slidev-layout kbd {
   background: var(--ice-code-bg);
+  color: var(--ice-fg);
   border: 1px solid var(--ice-border);
   border-radius: 4px;
   padding: 0.1em 0.4em;
