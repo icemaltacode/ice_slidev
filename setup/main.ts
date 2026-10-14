@@ -28,9 +28,15 @@ import { addSyncMethod } from '@slidev/client'
  *
  * INERT WITHOUT A PARENT, and that is required rather than tidy. A deck is opened three other
  * ways - at its published URL, under `slidev dev`, and as a PDF export - and in none of them
- * is there anybody to sync with. `window.parent === window` is the whole test, and every post
- * is addressed to this deck's own origin, so a page that framed one of ours from somewhere
- * else would receive nothing.
+ * is there anybody to sync with. `window.parent === window` is the test, and every post is
+ * addressed to this deck's own origin, so a page that framed one of ours from somewhere else
+ * would receive nothing.
+ *
+ * INERT ON AN OPAQUE ORIGIN as well. A deck opened from disk and framed by another page from
+ * disk (an instructor deck previewing the student one, packaged for offline use) has the
+ * origin "null" in Firefox. `postMessage` throws on "null" as a target rather than ignoring
+ * it, and the throw lands inside Slidev's channel setup, so the framed deck never starts.
+ * There is no player on a file:// page to sync with anyway.
  *
  * `updating` is Slidev's own flag for "this change came FROM a sync", and dropping those is
  * what stops a follower echoing every patch back at the room.
@@ -40,7 +46,7 @@ const MESSAGE = 'ice:deck-sync'
 
 interface Patch { kind: typeof MESSAGE, channel: string, data: unknown }
 
-const framed = () => typeof window !== 'undefined' && window.parent !== window
+const framed = () => typeof window !== 'undefined' && window.parent !== window && window.location.origin !== 'null'
 
 export default defineAppSetup(() => {
   if (!framed()) return
