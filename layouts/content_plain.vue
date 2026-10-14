@@ -58,7 +58,8 @@ const slots = useSlots()
   letter-spacing: -0.01em;
 }
 
-.cp-body :deep(ul) {
+.cp-body :deep(ul),
+.cp-body :deep(ol) {
   list-style: none;
   padding-left: 0;
   margin: 0;
@@ -75,8 +76,27 @@ const slots = useSlots()
   line-height: 1.25;
 }
 
-.cp-body :deep(li)::before {
+.cp-body :deep(ul > li)::before {
   content: '-';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: inherit;
+  font-weight: 500;
+}
+
+/* Numbered lists count rather than dash, so steps can be referred to. */
+.cp-body :deep(ol) {
+  counter-reset: ice-ol;
+}
+
+.cp-body :deep(ol > li) {
+  counter-increment: ice-ol;
+  padding-left: 1.4em;
+}
+
+.cp-body :deep(ol > li)::before {
+  content: counter(ice-ol) '.';
   position: absolute;
   left: 0;
   top: 0;
@@ -132,7 +152,8 @@ const slots = useSlots()
   color: black;
 }
 
-.cp-annotations :deep(ul) {
+.cp-annotations :deep(ul),
+.cp-annotations :deep(ol) {
   list-style: none;
   padding-left: 0.85em;
   margin: 0;
@@ -143,10 +164,27 @@ const slots = useSlots()
   padding-left: 0;
 }
 
-.cp-annotations :deep(li)::before {
+.cp-annotations :deep(ul > li)::before {
   content: '-';
   position: absolute;
   left: -1em;
+  color: black;
+}
+
+/* Numbered lists count rather than dash, so steps can be referred to. */
+.cp-annotations :deep(ol) {
+  counter-reset: ice-ol;
+  padding-left: 1.3em;
+}
+
+.cp-annotations :deep(ol > li) {
+  counter-increment: ice-ol;
+}
+
+.cp-annotations :deep(ol > li)::before {
+  content: counter(ice-ol) '.';
+  position: absolute;
+  left: -1.3em;
   color: black;
 }
 

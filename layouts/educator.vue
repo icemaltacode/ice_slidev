@@ -62,7 +62,8 @@ import iceLogo from '../assets/ice_logo_black.png'
   letter-spacing: -0.01em;
 }
 
-.ed-body :deep(ul) {
+.ed-body :deep(ul),
+.ed-body :deep(ol) {
   list-style: none;
   padding-left: 0;
   margin: 0;
@@ -79,8 +80,27 @@ import iceLogo from '../assets/ice_logo_black.png'
   line-height: 1.25;
 }
 
-.ed-body :deep(li)::before {
+.ed-body :deep(ul > li)::before {
   content: '-';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: inherit;
+  font-weight: 500;
+}
+
+/* Numbered lists count rather than dash, so steps can be referred to. */
+.ed-body :deep(ol) {
+  counter-reset: ice-ol;
+}
+
+.ed-body :deep(ol > li) {
+  counter-increment: ice-ol;
+  padding-left: 1.4em;
+}
+
+.ed-body :deep(ol > li)::before {
+  content: counter(ice-ol) '.';
   position: absolute;
   left: 0;
   top: 0;
